@@ -61,7 +61,7 @@
 {"name": "Kha'Zix", "gender": "Male", "positions": "Jungle", "species": "Void-Being", "resource": "Mana", "range_type": "Melee", "regions": "Void", "release_year": "2012"},
 {"name": "Kindred", "gender": "Other", "positions": "Jungle", "species": ["God", "Spirit"], "resource": "Mana", "range_type": "Ranged", "regions": "Runeterra", "release_year": "2015"},
 {"name": "Kled", "gender": "Male", "positions": "Top", "species": "Yordle", "resource": "Courage", "range_type": "Melee", "regions": "Noxus", "release_year": "2016"},
-{"name": "Kog'Maw", "gender": "Male", "positions": "Bottom", "species": "Void-Being", "resource": "Mana", "range_type": "Ranged", "regions": "Void", "release_year": "2010"},{"name": "K'Santé", "gender": "", "positions": "", "species": "", "resource": "", "range_type": "", "regions": "", "release_year": ""},
+{"name": "Kog'Maw", "gender": "Male", "positions": "Bottom", "species": "Void-Being", "resource": "Mana", "range_type": "Ranged", "regions": "Void", "release_year": "2010"},
 {"name": "K'Sante", "gender": "Male", "positions": "Top", "species": "Human", "resource": "Mana", "range_type": "Melee", "regions": "Shurima", "release_year": "2022"},
 {"name": "LeBlanc", "gender": "Female", "positions": "Middle", "species": ["Human", "Magically Altered"], "resource": "Mana", "range_type": "Ranged", "regions": "Noxus", "release_year": "2010"},
 {"name": "Lee Sin", "gender": "Male", "positions": "Jungle", "species": ["Human", "Spiritualist"], "resource": "Energy", "range_type": "Melee", "regions": "Ionia", "release_year": "2011"},

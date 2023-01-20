@@ -1,6 +1,7 @@
 import time, requests, json, re, random
 from selenium import webdriver
 from selenium.webdriver import ActionChains
+from pprint import pprint
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -81,6 +82,116 @@ def get_table_carac(caracteristic): # get caracteristic table
         return carac[0]
     else:
         return carac
+    
+######## VALIDATION FUNCTIONS ########
+
+def f_to_validate(to_validate): # return list of champ names that match with to_validate thanks to champs_data
+    champs_to_return = []
+    with open("data/champ_data.json", "r", encoding="utf-8") as f:
+        json_data = json.loads(f.read())
+        for champ in json_data:
+            if len(to_validate[0]) == 1:
+                if to_validate[0][0] != champ['gender'] and to_validate[0] != []:
+                    continue
+            else:
+                if to_validate[0] != champ['gender'] and to_validate[0] != []:
+                    continue
+            if len(to_validate[1]) == 1:    
+                if to_validate[1][0] != champ['positions'] and to_validate[1] != []:
+                    continue
+            else:
+                if to_validate[1] != champ['positions'] and to_validate[1] != []:
+                    continue
+            if len(to_validate[2]) == 1:
+                if to_validate[2][0] != champ['species'] and to_validate[2] != []:
+                    continue
+            else:
+                if to_validate[2] != champ['species'] and to_validate[2] != []:
+                    continue
+            if len(to_validate[3]) == 1:
+                if to_validate[3][0] != champ['resource'] and to_validate[3] != []:
+                    continue
+            else:
+                if to_validate[3] != champ['resource'] and to_validate[3] != []:
+                    continue
+            if len(to_validate[4]) == 1:
+                if to_validate[4][0] != champ['range_type'] and to_validate[4] != []:
+                    continue
+            else:
+                if to_validate[4] != champ['range_type'] and to_validate[4] != []:
+                    continue
+            if len(to_validate[5]) == 1:
+                if to_validate[5][0] != champ['regions'] and to_validate[5] != []:
+                    continue
+            else:
+                if to_validate[5] != champ['regions'] and to_validate[5] != []:
+                    continue
+            champs_to_return.append(champ['name'])
+    return champs_to_return
+
+def f_not_to_validate(not_to_validate): # return list of champ names that match with not_to_validate thanks to champs_data
+    champs_to_return = []
+    with open("data/champ_data.json", "r", encoding="utf-8") as f:
+        json_data = json.loads(f.read())
+        for champ in json_data:
+            if len(to_validate[0]) == 1:
+                if to_validate[0][0] == champ['gender'] and to_validate[0] != []:
+                    continue
+            else:
+                if to_validate[0] == champ['gender'] and to_validate[0] != []:
+                    continue
+            if len(to_validate[1]) == 1:    
+                if to_validate[1][0] == champ['positions'] and to_validate[1] != []:
+                    continue
+            else:
+                if to_validate[1] == champ['positions'] and to_validate[1] != []:
+                    continue
+            if len(to_validate[2]) == 1:
+                if to_validate[2][0] == champ['species'] and to_validate[2] != []:
+                    continue
+            else:
+                if to_validate[2] == champ['species'] and to_validate[2] != []:
+                    continue
+            if len(to_validate[3]) == 1:
+                if to_validate[3][0] == champ['resource'] and to_validate[3] != []:
+                    continue
+            else:
+                if to_validate[3] == champ['resource'] and to_validate[3] != []:
+                    continue
+            if len(to_validate[4]) == 1:
+                if to_validate[4][0] == champ['range_type'] and to_validate[4] != []:
+                    continue
+            else:
+                if to_validate[4] == champ['range_type'] and to_validate[4] != []:
+                    continue
+            if len(to_validate[5]) == 1:
+                if to_validate[5][0] == champ['regions'] and to_validate[5] != []:
+                    continue
+            else:
+                if to_validate[5] == champ['regions'] and to_validate[5] != []:
+                    continue
+            champs_to_return.append(champ['name'])
+    return champs_to_return
+
+def f_partial_validate(partial_validate): # return list of champ names that match with partial_validate thanks to champs_data
+    pass
+
+def f_year_validate(year_validate): # return list of champ names that match with year_validate thanks to champs_data
+    champs_to_return = []
+    with open("data/champ_data.json", "r", encoding="utf-8") as f:
+        json_data = json.loads(f.read())
+        for champ in json_data:
+            champ_year = int(champ['release_year'])
+            tested_year = int(year_validate[0])
+            operator = year_validate[1]
+            if champ_year > tested_year and operator == "+":
+                champs_to_return.append(champ['name'])
+            elif champ_year < tested_year and operator == "-":
+                champs_to_return.append(champ['name'])
+    return champs_to_return
+
+def merge_lists(to_validate, not_to_validate, partial_validate, year_validate, champs): # merge lists
+    pass
 
 # -- VARIABLES --
 url = "https://loldle.net/classic"
@@ -146,12 +257,14 @@ driver.find_element(By.CLASS_NAME, "fc-cta-consent").click() # -- ACCEPT COOKIES
 #                f.write(json.dumps(line, ensure_ascii=False) + "\n")
 #                log_string("New champ data : " + champ + " - " + str(caracteristics))
 
+global victory
 victory = False
 first = True
+tested_champs = []
 to_validate = [[],[],[],[],[],[],[]] # infos to validate
 not_to_validate = [[],[],[],[],[],[],[]] # infos not to validate
 partial_validate = [[],[],[],[],[],[],[]] # infos to validate partially
-year_validate = []
+year_validate = [0,""]
 while not victory:
     if first:
         first = False
@@ -160,6 +273,7 @@ while not victory:
     driver.find_element(By.TAG_NAME, "input").click()
     driver.find_element(By.TAG_NAME, "body").send_keys(champ)
     driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ENTER)
+    tested_champs.append(champ)
     time.sleep(wait_time)
     squares = driver.find_elements(By.CLASS_NAME, "square")
     nb_squares = len(squares)
@@ -196,11 +310,20 @@ while not victory:
             year_validate[1] = "+"
             year_validate[0] = caracteristics[i]
         elif validation[i] == "inferior":
-            year_validate.append([caracteristics[i], "-"])
+            year_validate[1] = "-"
+            year_validate[0] = caracteristics[i]
+        if i == 6:
+            if validation[i] == "good":
+                year_validate[1] = "="
+                year_validate[0] = caracteristics[i]
     print("to_validate : " + str(to_validate))
     print("not_to_validate : " + str(not_to_validate))
     print("partial_validate : " + str(partial_validate))
     print("year_validate : " + str(year_validate))
+    
+    print(f_to_validate(to_validate))
+    print(f_year_validate(year_validate))
+    
     quit()
         
 
